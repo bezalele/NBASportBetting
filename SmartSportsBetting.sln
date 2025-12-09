@@ -1,8 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSportsBetting.Api", "SmartSportsBetting.Api\SmartSportsBetting.Api.csproj", "{11111111-1111-1111-1111-111111111111}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetOddsIngestor", "..\BetOddsIngestor\BetOddsIngestor\BetOddsIngestor.csproj", "{3340BB42-D75D-3614-1730-52343066D829}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetValueEngine", "..\BetValueEngine\BetValueEngine\BetValueEngine.csproj", "{CCBCDC27-F0D2-1637-3FA6-0EAB60860824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSportsBetting.Domain", "SmartSportsBetting.Domain\SmartSportsBetting.Domain.csproj", "{293AA423-6B55-4907-BE79-10C4F785885F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSportsBetting.Infrastructure", "SmartSportsBetting.Infrastructure\SmartSportsBetting.Infrastructure.csproj", "{50BF8A4E-9D81-468B-9DF0-7BE12F63A6FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,8 +22,27 @@ Global
 		{11111111-1111-1111-1111-111111111111}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11111111-1111-1111-1111-111111111111}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11111111-1111-1111-1111-111111111111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3340BB42-D75D-3614-1730-52343066D829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3340BB42-D75D-3614-1730-52343066D829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3340BB42-D75D-3614-1730-52343066D829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3340BB42-D75D-3614-1730-52343066D829}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBCDC27-F0D2-1637-3FA6-0EAB60860824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBCDC27-F0D2-1637-3FA6-0EAB60860824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBCDC27-F0D2-1637-3FA6-0EAB60860824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBCDC27-F0D2-1637-3FA6-0EAB60860824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{293AA423-6B55-4907-BE79-10C4F785885F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{293AA423-6B55-4907-BE79-10C4F785885F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{293AA423-6B55-4907-BE79-10C4F785885F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{293AA423-6B55-4907-BE79-10C4F785885F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BF8A4E-9D81-468B-9DF0-7BE12F63A6FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BF8A4E-9D81-468B-9DF0-7BE12F63A6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BF8A4E-9D81-468B-9DF0-7BE12F63A6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BF8A4E-9D81-468B-9DF0-7BE12F63A6FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C85AFE93-E309-4344-933E-1CC860F01B32}
 	EndGlobalSection
 EndGlobal

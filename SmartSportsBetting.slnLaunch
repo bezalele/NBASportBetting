@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "SmartSportsBetting.Api\\SmartSportsBetting.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\BetOddsIngestor\\BetOddsIngestor\\BetOddsIngestor.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\BetValueEngine\\BetValueEngine\\BetValueEngine.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

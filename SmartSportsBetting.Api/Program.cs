@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using SmartSportsBetting.Api.Data;
-using SmartSportsBetting.Api.Models;
-using SmartSportsBetting.Api.Domain.Entities;
+using SmartSportsBetting.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,40 +63,77 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/", () => "SmartSportsBetting API is running");
 
-// Today's value bets
+
+// ------------------------------------------------------
+// TODAY endpoint
+// ------------------------------------------------------
 app.MapGet("/api/valuebets/today", async (BettingDbContext db) =>
 {
     var todayUtc = DateTime.UtcNow.Date;
-    var tomorrowUtc = todayUtc.AddDays(1);
+    var minEdge = 0.0m;
 
-    var query =
-        from br in db.BetRecommendations
-        join g in db.Games on br.GameId equals g.GameId
-        join ht in db.Teams on g.HomeTeamId equals ht.TeamId
-        join at in db.Teams on g.AwayTeamId equals at.TeamId
-        join l in db.Leagues on g.LeagueId equals l.LeagueId
-        join p in db.OddsProviders on br.OddsProviderId equals p.OddsProviderId
-        where br.CreatedUtc >= todayUtc && br.CreatedUtc < tomorrowUtc
-        orderby br.Edge descending
-        select new ValueBetDto
-        {
-            BetRecommendationId = br.BetRecommendationId,
-            League = l.Code,
-            HomeTeam = ht.Name,
-            AwayTeam = at.Name,
-            GameTime = g.GameDateTime,
-            Provider = p.Code,
-            BetType = br.BetType,
-            LineValue = br.LineValue,
-            BookOdds = br.BookOdds,
-            ModelProbability = br.ModelProbability,
-            ImpliedProbability = br.ImpliedProbability,
-            Edge = br.Edge,
-            RiskLevel = br.RiskLevel
-        };
+    var results = await db.DailyValueBets
+        .FromSqlRaw(
+            "EXEC betting.usp_SelectDailyValueBets @ForDateUtc = {0}, @MinEdge = {1}",
+            todayUtc,
+            minEdge)
+        .ToListAsync();
 
-    var results = await query.Take(50).ToListAsync();
     return Results.Ok(results);
+});
+
+
+// ------------------------------------------------------
+// FLEXIBLE endpoint: GET /api/valuebets?date=YYYY-MM-DD
+// ------------------------------------------------------
+app.MapGet("/api/valuebets", async (
+    BettingDbContext db,
+    string? date,
+    decimal? minEdge,
+    int? take,
+    string? marketType) =>
+{
+    // 1) Parse date (UTC day)
+    DateTime dayUtc;
+    if (string.IsNullOrWhiteSpace(date))
+    {
+        dayUtc = DateTime.UtcNow.Date;
+    }
+    else if (!DateTime.TryParse(date, out dayUtc))
+    {
+        return Results.BadRequest("Invalid date format. Use yyyy-MM-dd.");
+    }
+
+    // 2) Parameters
+    var leagueCode = "NBA";
+    var mtCode = string.IsNullOrWhiteSpace(marketType) ? null : marketType;
+    var min = minEdge ?? 0m;
+    var limit = take is > 0 and <= 500 ? take.Value : 50;
+
+    // 3) Call stored procedure
+    var rows = await db.DailyValueBets
+        .FromSqlRaw(
+            @"EXEC betting.usp_SelectValueBets_ByDate 
+                    @ForDateUtc = {0},
+                    @LeagueCode = {1},
+                    @MarketTypeCode = {2},
+                    @MinEdge = {3},
+                    @IncludePast = {4}",
+            dayUtc.Date,
+            leagueCode,
+            (object?)mtCode ?? DBNull.Value,
+            min,
+            1   // IncludePast = 1 => whole day, not just upcoming
+        )
+        .ToListAsync();
+
+    // 4) Apply take() in memory (cheap)
+    var result = rows
+        .OrderByDescending(r => r.Edge)
+        .Take(limit)
+        .ToList();
+
+    return Results.Ok(result);
 });
 
 app.Run();
