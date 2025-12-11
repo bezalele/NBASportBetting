@@ -64,7 +64,7 @@ namespace SmartSportsBetting.Infrastructure.Data
                 e.Property(p => p.LineValue).HasPrecision(8, 3);
                 e.Property(p => p.ImpliedProbability).HasPrecision(6, 5);
                 e.Property(p => p.ModelProbability).HasPrecision(6, 5);
-                e.Property(p => p.Edge).HasPrecision(7, 6);
+                e.Property(p => p.Edge).HasPrecision(10, 6);
             });
 
             modelBuilder.Entity<BetTicket>(e =>
